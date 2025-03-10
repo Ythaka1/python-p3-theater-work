@@ -1,0 +1,8 @@
+{
+    "cSpell.words": [
+        "backref"
+    ],
+    "python.analysis.extraPaths": [
+        "./lib"
+    ]
+}
