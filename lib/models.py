@@ -1,5 +1,5 @@
-from sqlalchemy import Boolean, ForeignKey, Column, Integer, String, MetaData
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Boolean, ForeignKey, Column, Integer, String, MetaData , create_engine
+from sqlalchemy.orm import relationship, backref , sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 convention = {
@@ -40,8 +40,11 @@ class Role(Base):
         return [audition.location for audition in self.auditions]
 
     def lead(self):
-        return self.auditions.filter_by(hired=True).first() or "no actor has been hired for this role"
+        hired_auditions = [audition for audition in self.auditions if audition.hired]
+        return hired_auditions[0] if hired_auditions else "no actor has been hired for this role"
 
     def understudy(self):
-        hired_auditions = self.auditions.filter_by(hired=True).limit(2).all()
+        hired_auditions = [audition for audition in self.auditions if audition.hired]
         return hired_auditions[1] if len(hired_auditions) > 1 else "no actor has been hired for understudy for this role"
+    
+    
